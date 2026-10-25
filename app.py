@@ -15,7 +15,7 @@ def load_catalog() -> pd.DataFrame:
     # Read the first worksheet, ttl=0 ensures always fresh data
     df = conn.read(ttl=0)
     return df if df is not None and not df.empty else pd.DataFrame(columns=[
-        "title", "author", "publisher", "isbn", "location", "status", "added_at"
+        "Titulo", "Autor", "Editora", "Edição", "Ano", "ISBN", "Posição", "Estado", "Emprestado", "added_at"
     ])
 
 
@@ -30,12 +30,12 @@ def append_books_to_sheet(new_books_df: pd.DataFrame, location: str):
         if not title:
             continue
         records.append({
-            "title": title,
-            "author": str(row.get("author", "")).strip() if pd.notna(row.get("author")) else "",
-            "publisher": str(row.get("publisher", "")).strip() if pd.notna(row.get("publisher")) else "",
-            "isbn": str(row.get("isbn", "")).strip() if pd.notna(row.get("isbn")) else "",
-            "location": location,
-            "status": "unread",
+            "Titulo": title,
+            "Autor": str(row.get("Autor", "")).strip() if pd.notna(row.get("Autor")) else "",
+            "Editora": str(row.get("Editora", "")).strip() if pd.notna(row.get("Editora")) else "",
+            "ISBN": str(row.get("ISBN", "")).strip() if pd.notna(row.get("ISBN")) else "",
+            "Posição": location,
+            "Estado": "unread",
             "added_at": now_str
         })
 
@@ -87,7 +87,7 @@ with tab_isbn:
 
     if st.button("Search ISBN"):
         found = lookup_isbn(isbn_val)
-        if found.get("title"):
+        if found.get("Titulo"):
             st.success("Book identified!")
             df_s = pd.DataFrame([found])
             edited_s = st.data_editor(df_s, num_rows="dynamic", use_container_width=True)
@@ -107,7 +107,7 @@ with tab_manual:
         m_loc = st.text_input("Shelf / Room", value="Sala - Prateleira 1")
         if st.form_submit_button("Add Book"):
             if m_title:
-                df_manual = pd.DataFrame([{"title": m_title, "author": m_author, "publisher": m_publisher}])
+                df_manual = pd.DataFrame([{"Titulo": m_title, "Autor": m_author, "Editora": m_publisher}])
                 append_books_to_sheet(df_manual, m_loc)
                 st.success(f"Added '{m_title}' to Google Sheet!")
 
