@@ -32,7 +32,7 @@ def append_books_to_sheet(new_books_df: pd.DataFrame, location: str):
         records.append({
             "Titulo": title,
             "Autor": str(row.get("author", "")).strip() if pd.notna(row.get("author")) else "",
-            "Editora": str(row.get("Editora", "")).strip() if pd.notna(row.get("Editora")) else "",
+            "Editora": str(row.get("publisher", "")).strip() if pd.notna(row.get("publisher")) else "",
             "ISBN": str(row.get("ISBN", "")).strip() if pd.notna(row.get("ISBN")) else "",
             "Posição": location,
             "Estado": "unread",
